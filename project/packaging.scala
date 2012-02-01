@@ -24,7 +24,12 @@ object Packaging {
       packageMapping(
         (bd / "copyright") -> "/usr/share/doc/g8/copyright"
       ) withPerms "0644" asDocs()
-    },   
+    },  
+    linuxPackageMappings <+= (resourceDirectory in Compile) map { bd =>
+      packageMapping(
+        (bd / "giter8.properties") -> "/etc/giter8/giter8.properties"
+      ) withPerms "0644" withConfig()
+    }, 
     linuxPackageMappings <+= (sourceDirectory in Linux) map { bd =>
       packageMapping(
         (bd) -> "/usr/share/doc/g8"
