@@ -1,0 +1,71 @@
+.\" Process this file with
+.\" groff -man -Tascii g8.1
+.\"
+.TH g8 1 "NOVEMBER 2011" Linux "User Manuals"
+.SH NAME
+g8 \- giter8 project templating
+.SH SYNOPSIS
+.B g8 [TEMPLATE] [OPTION]
+.B ...
+.SH DESCRIPTION
+.B g8
+Runs the giter8 project template creator using the currently installed
+.BR sbt (1)
+The current directory is assumed to be the location of the new project.
+.SH OPTIONS
+.IP "-l, --list"
+List current giter8 templates on github.
+.IP "-b, --branch"
+Resolves a template within a given branch
+.IP "--paramname=paramvalue"
+Set given parameter value and bypass interaction.
+.IP -h
+Show help options.
+.IP "-verbose | -v"
+turn up the noise
+.IP "-debug or -d"
+set sbt log level to debug
+.IP "-ivy      <path>"
+path to local Ivy repository (default: ~/.ivy2)
+.IP "-mem   <integer>"
+set memory options (default: $sbt_mem, which is $(get_mem_opts $sbt_mem))
+.SH SBT Launcher Version Options
+.IP "-sbt-version <sbt-version>"
+The Simple Build Tool launcher version to use.  This script will
+download necessary versions using the
+.BR curl (1)
+tool.
+.IP "-sbt-jar      <path>"
+use the specified jar as the sbt launcher
+.IP "-sbt-rc"
+use an RC version of sbt
+.IP -sbt-snapshot
+use a snapshot version of sbt
+.SH Java Options
+.IP "-java-home <path>"
+alternate JAVA_HOME
+.IP "-Dkey=val"
+pass -Dkey=val directly to the java runtime
+.IP -J-X
+pass option -X directly to the java runtime (-J is stripped)
+.SH ENVIRONMENT
+.IP JAVAOPTS
+If non-null a set of arguments passed to java.
+.SH EXAMPLES
+Apply template and interactively fulfill parameters.
+    g8 n8han/giter8
+
+Apply template from a remote branch
+    g8 n8han/giter8 -b some-branch
+
+Apply given name parameter and use defaults for all others.
+    g8 n8han/giter8 --name=template-test
+
+List available templates.
+    g8 --list
+.SH AUTHORS
+Nathan Hamblen <n8han@technically.us>
+
+Josh Suereth <joshua.suereth@typesafe.com>
+
+
