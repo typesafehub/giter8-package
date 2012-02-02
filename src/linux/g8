@@ -1,14 +1,8 @@
 #!/usr/bin/env bash
 
-#launchlib="/usr/share/sbt/sbt-launch-lib.sh"
-launchlib="$(dirname $0)/sbt-launch-lib.bash"
-# TODO - Test for launch lib.
-. $launchlib
+. /usr/share/sbt/sbt-launch-lib.bash
 
-declare propsfile="/etc/giter8/giter8.properties"
-if test ! -e propsfile; then
-  propsfile=$(dirname $0)/giter8.properties
-fi
+propsfile="/etc/giter8/giter8.properties"
 
 usage() {
   # Just call underlying g8 for usage info.
