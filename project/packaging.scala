@@ -32,8 +32,9 @@ object Packaging {
     }, 
     linuxPackageMappings <+= (sourceDirectory in Linux) map { bd =>
       packageMapping(
-        (bd) -> "/usr/share/doc/g8"
-      ) asDocs()
+        (bd) -> "/usr/share/doc/g8",
+        (bd) -> "/etc/giter8"
+      ) withPerms "0755" asDocs()
     },
     // DEBIAN SPECIFIC    
     name in Debian := "g8",
@@ -46,17 +47,17 @@ object Packaging {
     },
     
     // RPM SPECIFIC
-    name in Rpm := "sbt",
-    version in Rpm <<= sbtVersion.identity,
+    name in Rpm := "g8",
+    version in Rpm <<= version,
     rpmRelease := "1",
     rpmVendor := "typesafe",
     rpmUrl := Some("http://github.com/n8han/giter8"),
     rpmLicense := Some("BSD"),
-    
+    rpmRequirements ++= Seq("sbt", "git"),
     
     // WINDOWS SPECIFIC
-    name in Windows := "sbt",
+    name in Windows := "g8",
     lightOptions ++= Seq("-ext", "WixUIExtension", "-cultures:en-us"),
-    wixConfig <<= <Wix/>
+    wixConfig := <Wix/>
   )
 }
