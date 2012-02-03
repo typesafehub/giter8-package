@@ -51,10 +51,12 @@ goto error
 :run
 
 @REM WE MUST FIX THE BOOT PROPERTIES TO BE A JAVA URL
+SETLOCAL ENABLEDELAYEDEXPANSION
 set bootprop=%G8_HOME%giter8.properties
+set bootprop=!bootprop: =%%20!
 set bootprop=-Dsbt.boot.properties=file:/%bootprop:\=/%
 
-"%_JAVACMD%" %_JAVA_OPTS% %SBT_OPTS% %bootprop% -cp "%SBT_HOME%jansi.jar;%SBT_HOME%sbt-launch.jar;%SBT_HOME%classes" SbtJansiLaunch %*
+"%_JAVACMD%" %_JAVA_OPTS% %SBT_OPTS% "%bootprop%" -cp "%SBT_HOME%jansi.jar;%SBT_HOME%sbt-launch.jar;%SBT_HOME%classes" SbtJansiLaunch %*
 if ERRORLEVEL 1 goto error
 goto end
 
