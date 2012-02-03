@@ -65,6 +65,7 @@ object Packaging {
     import com.typesafe.packager.windows.WixHelper._
     val (propids, propxml) = generateComponentsAndDirectoryXml(rdir / "giter8.properties", "prop_")
     val (binids, binxml) = generateComponentsAndDirectoryXml(wdir / "g8.bat", "bat_")
+    val (licids, licxml) = generateComponentsAndDirectoryXml(wdir / "License.rtf", "license_")
     
 <Wix xmlns='http://schemas.microsoft.com/wix/2006/wi' xmlns:util='http://schemas.microsoft.com/wix/UtilExtension'>
   <Product Id='8619b63a-4e7f-44a5-8ca6-2b0a16ec864d' 
@@ -90,6 +91,7 @@ object Packaging {
       <DirectoryRef Id="INSTALLDIR">
         {propxml}
         {binxml}
+        {licxml}
         <Component Id="Giter8LauncherPath" Guid="6e047fb2-5b4b-44d0-953d-eb9a73062a63">
           <CreateFolder/>
           <Environment Id="PATH" Name="PATH" Value="[INSTALLDIR]" Permanent="no" Part="last" Action="set" System="yes" />
@@ -98,7 +100,7 @@ object Packaging {
       
       <Feature Id='Complete' Title='Giter8 project templater' Description='An application to generate project templates.' Level='1'>
         <Feature Id='g8' Title='g8 script' Level='1' Absent='disallow'>
-          { for(ref <- (propids ++ binids)) yield <ComponentRef Id={ref}/> }
+          { for(ref <- (propids ++ binids ++ licids)) yield <ComponentRef Id={ref}/> }
         </Feature>
         <Feature Id='Giter8LauncherPathF' Title='Add g8 to windows system PATH' Description='Adds the g8.bat file to the windows system path.' Level='1'>
           <ComponentRef Id='Giter8LauncherPath'/>
