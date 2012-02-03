@@ -111,6 +111,7 @@ object Packaging {
       <UIRef Id="WixUI_FeatureTree"/>
       <UIRef Id="WixUI_ErrorProgressText"/>
       <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR"/>
+      <WixVariable Id="WixUILicenseRtf" Value={wdir.getAbsolutePath + "\\License.rtf"} />
   </Product>
 </Wix>
   }
