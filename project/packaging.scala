@@ -5,7 +5,7 @@ import com.typesafe.packager.PackagerPlugin._
 
 object Packaging {
 
-  val settings: Seq[Setting[_]] = packagerSettings ++ Seq(
+  val settings: Seq[Setting[_]] = packagerSettings ++ deploymentSettings ++ Seq(
     // GENERAL LINUX PACKAGING STUFFS
     maintainer := "Josh Suereth <joshua.suereth@typesafe.com>",
     packageSummary := "giter8 project template scaffolding",
@@ -56,7 +56,7 @@ object Packaging {
     
     // WINDOWS SPECIFIC
     name in Windows := "sbt",
-    lightOptions ++= Seq("-ext", "WixUIExtension", "-cultures:en-us"),
-    wixConfig <<= <Wix/>
+    //lightOptions ++= Seq("-ext", "WixUIExtension", "-cultures:en-us"),
+    wixConfig := <Wix/>
   )
 }

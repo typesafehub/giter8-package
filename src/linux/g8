@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-#launchlib="/usr/share/sbt/sbt-launch-lib.sh"
-launchlib="$(dirname $0)/sbt-launch-lib.bash"
+launchlib="/usr/share/sbt/sbt-launch-lib.sh"
+#launchlib="$(dirname $0)/sbt-launch-lib.bash"
 # TODO - Test for launch lib.
 . $launchlib
 
