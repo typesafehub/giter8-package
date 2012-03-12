@@ -1,0 +1,50 @@
+#!/bin/sh
+# g8 launcher script for Cygwin and MSYS
+# Environment:
+#   JAVA_HOME - location of a JDK home dir (optional)
+#   SBT_HOME  - location of a JDK home dir (mandatory)
+#   JAVA_OPTS - JVM options (optional)
+#   SBT_OPTS  - JVM options (optional)
+
+_JAVA_CMD=java
+_JAVA_HOME="$JAVA_HOME"
+_SBT_HOME=$(echo "$SBT_HOME" | sed -e 's~^\(.*\)\\$~\1~')
+_JAVA_OPTS="$JAVA_OPTS"
+
+if [ -z "$JAVA_OPTS" ]; then
+  _JAVA_OPTS="-Xmx128M"
+fi
+
+UDIR=`dirname "$0"`
+if [ -z "$MSYSTEM" ]; then
+  WDIR=`cygpath -alm "$UDIR"`
+  if [ -n "$_JAVA_HOME" ]; then
+    _JAVA_HOME="`cygpath \"${_JAVA_HOME}\"`"
+  fi
+  U_SBT_HOME="`cygpath \"${_SBT_HOME}\"`"
+else
+  WDIR=`echo "$UDIR" | sed -e 's~^/\([^/]*\)/~\1:/~'`
+  U_SBT_HOME="$SBT_HOME"
+fi
+
+if [ -n "$_JAVA_HOME" ]; then
+  _JAVA_CMD="$_JAVA_HOME/bin/java"
+fi
+
+if [ -f "$U_SBT_HOME/sbt-launch.jar" ]; then :; else
+  echo ERROR: SBT_HOME is not set or set to an invalid directory.
+  echo SBT_HOME = $SBT_HOME
+  exit 1
+fi
+
+BOOTPROP=$(echo "-Dsbt.boot.properties=file:///$WDIR/giter8.properties" | sed -e 's/ /%20/g')
+
+if [ "_$TERM" = "_xterm" ]; then
+  # Let the terminal handle ANSI sequences
+  stty -icanon min 1 -echo > /dev/null 2>&1
+  "$_JAVA_CMD" $_JAVA_OPTS $SBT_OPTS -Djline.terminal=jline.UnixTerminal "$BOOTPROP" -jar "$_SBT_HOME/sbt-launch.jar" $@
+  stty icanon echo > /dev/null 2>&1
+else
+  # Use Jansi to intercept ANSI sequences
+  "$_JAVA_CMD" $_JAVA_OPTS $SBT_OPTS -Dsbt.log.format=true "$BOOTPROP" -cp "$_SBT_HOME/jansi.jar;$_SBT_HOME/sbt-launch.jar;$_SBT_HOME/classes" SbtJansiLaunch $@
+fi
