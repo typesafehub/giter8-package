@@ -58,7 +58,24 @@ object Packaging {
     // WINDOWS SPECIFIC
     name in Windows := "g8",
     lightOptions ++= Seq("-ext", "WixUIExtension", "-cultures:en-us"),
-    wixConfig <<= (version, resourceDirectory in Compile, sourceDirectory in Windows) map makeWindowsXml
+    wixConfig <<= (version, resourceDirectory in Compile, sourceDirectory in Windows) map makeWindowsXml,
+    
+    // UNIVERSAL INSTALLER
+    name in Universal := "g8",
+    mappings in Universal <+= (resourceDirectory in Compile) map { dir =>
+       dir / "giter8.properties" -> ("bin/giter8.properties")
+    },
+    mappings in Universal <++= (sourceDirectory in Windows) map { dir =>
+       Seq(
+         dir / "g8.bat" -> ("bin/g8.bat"),
+         dir / "g8"     -> ("bin/win-g8")
+       )
+    },
+    mappings in Universal <++= (baseDirectory) map { dir =>
+       Seq(
+         dir / "LICENSE" -> ("LICENSE")
+       )
+    }
   )
   
   def makeWindowsXml(version: String, rdir: File, wdir: File) = {

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# TODO - Find this from SBT install
+. $(dirname $0)/sbt-launch-lib.bash
+
+propsfile="$(dirname $0)/giter8.properties"
+
+usage() {
+  # Just call underlying g8 for usage info.
+  runAlternateBoot $propsfile
+}
+
+runAlternateBoot $propsfile $@
