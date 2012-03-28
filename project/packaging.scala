@@ -39,7 +39,7 @@ object Packaging {
     // DEBIAN SPECIFIC    
     name in Debian := "g8",
     version in Debian <<= version,
-    debianPackageDependencies in Debian ++= Seq("sbt", "git"),
+    debianPackageDependencies in Debian ++= Seq("sbt"),
     linuxPackageMappings in Debian <+= (sourceDirectory) map { bd =>
       (packageMapping(
         (bd / "debian/changelog") -> "/usr/share/doc/g8/changelog.gz"
