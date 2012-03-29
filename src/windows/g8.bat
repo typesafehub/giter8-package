@@ -32,19 +32,18 @@ if "%_JAVA_OPTS%"=="" set "_JAVA_OPTS=-Xmx128M -Dsbt.log.format=true"
 
 if not "%SBT_HOME%"=="" goto SbtHomeSet
 
-echo.
-echo ERROR: Envionment variable SBT_HOME not set
-echo Cannot find sbt-launch.jar to run g8.
-echo.
-goto error
+@REM We try to set SBT_HOME to G8_HOME before giving up.
+set SBT_HOME=%G8_HOME%
 
 :SbtHomeSet
 
 if exist "%SBT_HOME%\sbt-launch.jar" goto :run
 
 echo.
-echo ERROR: SBT_HOME is set to an invalid directory.
+echo ERROR: SBT_HOME is not set, or set to an invalid directory.
 echo SBT_HOME = %SBT_HOME%
+echo.
+echo Could not find a sbt-launch.jar to run g8.
 echo.
 goto error
 
