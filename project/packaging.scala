@@ -6,6 +6,7 @@ import com.typesafe.packager.PackagerPlugin._
 object Packaging {
 
   val settings: Seq[Setting[_]] = packagerSettings ++ deploymentSettings ++ Seq(
+    organization := "net.databinder.giter8",
     // GENERAL LINUX PACKAGING STUFFS
     maintainer := "Josh Suereth <joshua.suereth@typesafe.com>",
     packageSummary := "giter8 project template scaffolding",
@@ -75,6 +76,19 @@ object Packaging {
        Seq(
          dir / "LICENSE" -> ("LICENSE")
        )
+    },
+
+    // Misccelaneous publishing stuff...
+    projectID in Debian    <<= (organization) apply { (o) => ModuleID(o,"g8","0.5.3") },
+    projectID in Windows   <<= (organization) apply { (o) => ModuleID(o,"g8","0.5.3") },
+    projectID in Rpm       <<= (organization) apply { (o) => ModuleID(o,"g8","0.5.3") },
+    projectID in Universal <<= (organization) apply { (o) => ModuleID(o,"g8","0.5.3") },
+    publishTo in Global := {
+      val nativeReleaseUrl = "http://scalasbt.artifactoryonline.com/scalasbt/sbt-native-packages"
+      val nativeReleasePattern = "[organization]/[module]/[revision]/[module].[ext]"
+      val resolver = Resolver.url("native-releases", new URL(nativeReleaseUrl))(Patterns(nativeReleasePattern))
+      //     Resolver.file("native-releases-local", file("/home/jsuereth/repos/native-packages"))(Patterns(nativeReleasePattern))
+      Some(resolver)
     }
   )
   
